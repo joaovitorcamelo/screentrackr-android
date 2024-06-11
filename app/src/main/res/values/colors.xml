@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="errorBackground">#ffdddd</color>
+    <color name="errorText">#D8000C</color>
+    <color name="successBackground">#ddffdd</color>
+    <color name="successText">#145214</color>
+    <color name="linkColor">#bdb2c8</color>
+    <color name="primaryColor">#8f78a7</color>
+    <color name="background_color">#0d0c0e</color>
+    <color name="main_color">#4f3669</color>
+    <color name="main_color_hover">#664d81</color>
+    <color name="main_color_focus">#42295c</color>
+    <color name="input_bg">#2c2a2f</color>
+    <color name="placeholder_color">#968f9d</color>
+    <color name="brightest_color">#e2dde8</color>
+    <color name="text_color">#e7def0</color>
+    <color name="header_border">#3d3940</color>
+</resources>

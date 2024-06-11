@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:padding="16dp"
+    tools:context=".AfterFirstLoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:padding="16dp"
+        android:elevation="4dp">
+
+    <TextView
+        android:id="@+id/form_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What's your name?"
+        android:textColor="@color/brightest_color"
+        android:textSize="24sp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/name_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/input_bg"
+        android:padding="10dp"
+        android:textColor="@color/brightest_color"
+        android:textColorHint="@color/placeholder_color"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:minWidth="280dp" />
+
+    <Button
+        android:id="@+id/continue_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_color"
+        android:textColor="@color/brightest_color"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:text="Continue" />
+</LinearLayout>
+    </RelativeLayout>

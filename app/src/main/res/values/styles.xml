@@ -1,0 +1,57 @@
+<resources>
+    <!-- Tema da aplicação -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:background">@color/background_color</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+
+    <!-- Estilo para Headers -->
+    <style name="HeaderText">
+        <item name="android:textColor">@color/brightest_color</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!-- Estilo para links (TextView) -->
+    <style name="LinkText">
+        <item name="android:textColor">@color/linkColor</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Estilo para botões primários -->
+    <style name="PrimaryButton">
+        <item name="android:background">@color/main_color</item>
+        <item name="android:textColor">@color/brightest_color</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <!-- Estilo para campos de entrada -->
+    <style name="InputField">
+        <item name="android:background">@color/input_bg</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/brightest_color</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:minWidth">280dp</item>
+    </style>
+
+    <!-- Estilo para mensagens de erro -->
+    <style name="ErrorMessage">
+        <item name="android:background">@color/errorBackground</item>
+        <item name="android:textColor">@color/errorText</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- Estilo para mensagens de sucesso -->
+    <style name="SuccessMessage">
+        <item name="android:background">@color/successBackground</item>
+        <item name="android:textColor">@color/successText</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+</resources>

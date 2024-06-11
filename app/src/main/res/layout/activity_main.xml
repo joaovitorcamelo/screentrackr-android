@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="303dp"
+        android:layout_height="275dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="30dp"
+        android:contentDescription="@string/screentrackr_logo"
+        android:src="@drawable/logo_foreground" />
+
+    <Button
+        android:id="@+id/login_button"
+        style="@style/PrimaryButton"
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_image"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_button" />
+
+    <Button
+        android:id="@+id/signup_button"
+        style="@style/PrimaryButton"
+        android:layout_width="141dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/register_button" />
+
+</RelativeLayout>
