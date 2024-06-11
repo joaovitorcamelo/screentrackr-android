@@ -42,27 +42,20 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailInput.getText().toString().trim();
-                String password = passwordInput.getText().toString().trim();
+        loginButton.setOnClickListener(v -> {
+            String email = emailInput.getText().toString().trim();
+            String password = passwordInput.getText().toString().trim();
 
-                if (!email.isEmpty() && !password.isEmpty()) {
-                    loginUser(email, password);
-                } else {
-                    Toast.makeText(LoginActivity.this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
-                }
+            if (!email.isEmpty() && !password.isEmpty()) {
+                loginUser(email, password);
+            } else {
+                Toast.makeText(LoginActivity.this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
             }
         });
 
-        signupLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Redirecionar para a atividade de registro
-                Intent signupIntent = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(signupIntent);
-            }
+        signupLink.setOnClickListener(v -> {
+            Intent signupIntent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(signupIntent);
         });
     }
 
@@ -75,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://10.0.2.2:8080/screentrackr_war_exploded/LoginServlet") // Certifique-se de ajustar a URL correta do servlet
+                .url("http://10.0.2.2:8080/screentrackr_war_exploded/LoginServlet")
                 .post(formBody)
                 .build();
 
@@ -88,11 +81,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
-                Log.d("LoginActivity", "Response Data: " + responseData); // Log da resposta completa
+                Log.d("LoginActivity", "Response Data: " + responseData);
 
-                // Verificar se a resposta é um JSON válido
                 if (responseData.startsWith("<")) {
-                    // Provavelmente é HTML, não JSON
                     runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Unexpected response format: HTML received", Toast.LENGTH_SHORT).show());
                 } else {
                     handleLoginResponse(responseData);
@@ -119,24 +110,28 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("userEmail", email);
                 editor.apply();
 
+                // Log para verificar as informações salvas
+                Log.d("LoginActivity", "Saved UserID: " + userId);
+                Log.d("LoginActivity", "Saved AuthToken: " + authToken);
+
+                Intent intent;
                 if (firstLogin) {
-                    // Redirecionar para a página after_first_log com o userId
-                    Intent intent = new Intent(LoginActivity.this, AfterFirstLoginActivity.class);
+                    intent = new Intent(LoginActivity.this, AfterFirstLoginActivity.class);
                     intent.putExtra("userId", userId);
-                    startActivity(intent);
                 } else {
-                    // Redirecionar para a página principal (tracker)
-                    Intent intent = new Intent(LoginActivity.this, TrackerActivity.class);
-                    startActivity(intent);
+                    intent = new Intent(LoginActivity.this, TrackerActivity.class);
                 }
-                finish(); // Fechar a atividade atual
+                startActivity(intent);
+                finish();
             } else {
                 String message = jsonResponse.getString("message");
                 runOnUiThread(() -> Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show());
             }
         } catch (Exception e) {
             runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Failed to parse response: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-            Log.e("LoginActivity", "Response Parsing Error: ", e); // Log do erro de parsing
+            Log.e("LoginActivity", "Response Parsing Error: ", e);
         }
     }
 }
+
+

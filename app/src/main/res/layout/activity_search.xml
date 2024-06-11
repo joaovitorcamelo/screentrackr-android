@@ -3,45 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SearchActivity">
+    tools:context=".SearchActivity"
+    android:background="@color/background_color">
 
-    <!-- Campo de entrada para pesquisa -->
-    <EditText
-        android:id="@+id/search_input"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter movie title"
-        android:padding="10dp"
-        android:layout_margin="16dp"
-        android:layout_alignParentTop="true" />
-
-    <!-- Botão de pesquisa -->
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:layout_below="@id/search_input"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp" />
-
-    <!-- Contêiner para resultados de pesquisa -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/search_button"
-        android:layout_marginTop="16dp"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/search_results_container"
+        <EditText
+            android:id="@+id/search_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:hint="Search movies"
+            android:background="@color/input_bg"
+            android:textColor="@color/brightest_color"
+            android:textColorHint="@color/placeholder_color"
             android:padding="10dp" />
-    </ScrollView>
 
-    <!-- Bottom Navigation -->
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:background="@color/main_color"
+            android:textColor="@color/brightest_color"
+            android:layout_marginTop="10dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:id="@+id/search_results_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+    </LinearLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

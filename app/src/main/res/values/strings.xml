@@ -9,4 +9,10 @@
     <string name="confirm_password_hint">Confirm password</string>
     <string name="register_button">Register</string>
     <string name="already_have_an_account_sign_in">Already have an account? Sign in</string>
+    <string-array name="relation_types">
+        <item>watching</item>
+        <item>cancelled</item>
+        <item>watched</item>
+        <item>watchlist</item>
+    </string-array>
 </resources>
