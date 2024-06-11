@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,8 +5,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SearchActivity">
 
-    <!-- Conteúdo de Pesquisa aqui -->
+    <!-- Campo de entrada para pesquisa -->
+    <EditText
+        android:id="@+id/search_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter movie title"
+        android:padding="10dp"
+        android:layout_margin="16dp"
+        android:layout_alignParentTop="true" />
 
+    <!-- Botão de pesquisa -->
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:layout_below="@id/search_input"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp" />
+
+    <!-- Contêiner para resultados de pesquisa -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_button"
+        android:layout_marginTop="16dp"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/search_results_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp" />
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

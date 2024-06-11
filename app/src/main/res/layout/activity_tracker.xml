@@ -1,13 +1,180 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_color"
     tools:context=".TrackerActivity">
 
-    <!-- Seu conteúdo de rastreamento aqui -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Currently Watching Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Currently Watching"
+                android:textColor="@color/brightest_color"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/currently_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <!-- Watchlist Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Watchlist"
+                android:textColor="@color/brightest_color"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/watchlist_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <!-- Watched Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Watched"
+                android:textColor="@color/brightest_color"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/watched_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <!-- Cancelled Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancelled"
+                android:textColor="@color/brightest_color"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/cancelled_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/film_modal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/main_color"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:id="@+id/film_details_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@color/input_bg"
+            android:elevation="8dp"
+            android:layout_centerInParent="true">
+
+            <!-- Movie Poster -->
+            <ImageView
+                android:id="@+id/film_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Movie Title -->
+            <TextView
+                android:id="@+id/film_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/brightest_color"
+                android:textSize="20sp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Movie Plot -->
+            <TextView
+                android:id="@+id/film_plot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/brightest_color"
+                android:textSize="14sp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Movie Relations -->
+            <Spinner
+                android:id="@+id/relation_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/spinner_bg"
+                android:padding="8dp" />
+
+            <Button
+                android:id="@+id/add_submit_film"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:background="@color/main_color"
+                android:textColor="@color/brightest_color"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/close_modal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Close"
+                android:background="@color/errorBackground"
+                android:textColor="@color/brightest_color" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
