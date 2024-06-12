@@ -218,7 +218,10 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/input_bg"
         android:layout_alignParentBottom="true"
+        app:itemIconTint="@color/placeholder_color"
+        app:itemTextColor="@color/placeholder_color"
+        app:itemTextAppearanceActive="@color/main_color"
         app:menu="@menu/bottom_nav_menu" />
-
 </RelativeLayout>

@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -148,16 +150,52 @@ public class TrackerActivity extends AppCompatActivity {
             watchlistList.removeAllViews();
             watchedList.removeAllViews();
             cancelledList.removeAllViews();
-            for (int i = 0; i < filmRelations.length(); i++) {
-                JSONObject film = filmRelations.getJSONObject(i);
-                String relationType = film.getString("relationType");
-                String posterUrl = film.getString("posterImgUrl");
-                addFilmToList(film, relationType, posterUrl);
+
+            if (filmRelations.length() == 0) {
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "No films added yet. Start adding some!", Toast.LENGTH_LONG).show();
+                });
+            } else {
+                for (int i = 0; i < filmRelations.length(); i++) {
+                    JSONObject film = filmRelations.getJSONObject(i);
+                    String relationType = film.getString("relationType");
+                    String posterUrl = film.getString("posterImgUrl");
+                    addFilmToList(film, relationType, posterUrl);
+                }
             }
+
+            // Verificar se as listas específicas estão vazias após o processamento
+            checkListEmpty(currentlyList, "No films currently being watched.");
+            checkListEmpty(watchlistList, "Your watchlist is empty.");
+            checkListEmpty(watchedList, "You haven't marked any films as watched.");
+            checkListEmpty(cancelledList, "No films cancelled.");
+
         } catch (Exception e) {
             Toast.makeText(this, "Failed to parse film data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void checkListEmpty(LinearLayout list, String message) {
+        if (list.getChildCount() == 0) {
+            runOnUiThread(() -> addEmptyMessageToList(list, message));
+        }
+    }
+
+    private void addEmptyMessageToList(LinearLayout list, String message) {
+        TextView emptyView = new TextView(this);
+        emptyView.setText(message);
+        emptyView.setTextColor(getResources().getColor(R.color.brightest_color)); // A cor do texto
+        emptyView.setTextSize(18); // Tamanho do texto
+        emptyView.setGravity(Gravity.CENTER); // Centraliza o texto
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 300); // Dimensões semelhantes a de um poster
+        layoutParams.gravity = Gravity.CENTER;
+        layoutParams.setMargins(0, 10, 0, 20);
+        emptyView.setBackgroundResource(R.color.header_border);
+        emptyView.setLayoutParams(layoutParams);
+        emptyView.setPadding(20,10, 20, 10);
+        list.addView(emptyView);
+    }
+
 
     private void addFilmToList(JSONObject film, String relationType, String posterUrl) {
         try {
