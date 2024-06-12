@@ -95,10 +95,10 @@
 
         <!-- Botão para adicionar ou atualizar o filme -->
         <Button
-            android:id="@+id/add_submit_film"
+            android:id="@+id/update_film_relation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Adicionar Filme"
+            android:text="Atualizar Filme"
             android:background="@color/main_color"
             android:textColor="@color/brightest_color"
             android:padding="10dp" />

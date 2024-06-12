@@ -42,16 +42,6 @@ public class TrackerActivity extends AppCompatActivity {
     private LinearLayout watchlistList;
     private LinearLayout watchedList;
     private LinearLayout cancelledList;
-    private View filmModal;
-    private TextView filmTitle;
-    private TextView filmDetails;
-    private TextView filmPlot;
-    private ImageView filmPoster;
-    private Spinner relationType;
-    private Button addSubmitFilm;
-    private Button deleteFilmRelation;
-    private Button closeModal;
-    private CheckBox favoriteCheckbox;
     private OkHttpClient client;
     private int userId;
     private String authToken;
@@ -67,20 +57,6 @@ public class TrackerActivity extends AppCompatActivity {
         watchlistList = findViewById(R.id.watchlist_list);
         watchedList = findViewById(R.id.watched_list);
         cancelledList = findViewById(R.id.cancelled_list);
-
-        // Inflar o modal do layout film_modal_tracker.xml
-        filmModal = LayoutInflater.from(this).inflate(R.layout.film_modal_tracker, null);
-
-        // Inicializar componentes do modal
-        filmTitle = filmModal.findViewById(R.id.film_title);
-        filmDetails = filmModal.findViewById(R.id.film_details);
-        filmPlot = filmModal.findViewById(R.id.film_plot);
-        filmPoster = filmModal.findViewById(R.id.film_poster);
-        relationType = filmModal.findViewById(R.id.relation_type_spinner);
-        addSubmitFilm = filmModal.findViewById(R.id.add_submit_film);
-        deleteFilmRelation = filmModal.findViewById(R.id.delete_film_relation);
-        closeModal = filmModal.findViewById(R.id.close_modal);
-        favoriteCheckbox = filmModal.findViewById(R.id.favorite_checkbox);
         client = new OkHttpClient();
         sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
 
@@ -98,20 +74,6 @@ public class TrackerActivity extends AppCompatActivity {
 
         // Carregar filmes do usuário
         loadUserFilms();
-
-        // Configurar o botão de fechamento do modal
-        closeModal.setOnClickListener(v -> filmModal.setVisibility(View.GONE));
-
-        // Configurar o botão de adicionar filme
-        addSubmitFilm.setOnClickListener(v -> updateFilmRelation());
-
-        // Configurar o botão de deletar filme
-        deleteFilmRelation.setOnClickListener(v -> {
-            String filmId = (String) filmModal.getTag(); // Usar a tag para armazenar o filmId
-            if (filmId != null) {
-                deleteFilmRelation(filmId);
-            }
-        });
 
         // Configurar o menu de navegação inferior
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -208,9 +170,6 @@ public class TrackerActivity extends AppCompatActivity {
 
             Picasso.get().load(posterUrl).into(filmImageView);
 
-            // Adiciona o filmId como tag para uso futuro
-            filmImageView.setTag(filmId);
-
             filmImageView.setOnClickListener(v -> showFilmModal(filmId));
 
             switch (relationType) {
@@ -253,7 +212,7 @@ public class TrackerActivity extends AppCompatActivity {
                         JSONObject film = new JSONObject(responseData);
                         runOnUiThread(() -> {
                             try {
-                                displayFilmDetails(film);
+                                displayFilmDetails(film, filmId);
                             } catch (JSONException e) {
                                 Toast.makeText(TrackerActivity.this, "Failed to show film details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -268,14 +227,20 @@ public class TrackerActivity extends AppCompatActivity {
         });
     }
 
-    private void displayFilmDetails(JSONObject film) throws JSONException {
-        // Obter todos os componentes do modal a partir da referência do layout film_modal_tracker
-        filmTitle = filmModal.findViewById(R.id.film_title);
-        filmDetails = filmModal.findViewById(R.id.film_details);
-        filmPlot = filmModal.findViewById(R.id.film_plot);
-        filmPoster = filmModal.findViewById(R.id.film_poster);
-        relationType = filmModal.findViewById(R.id.relation_type_spinner);
-        favoriteCheckbox = filmModal.findViewById(R.id.favorite_checkbox);
+    private void displayFilmDetails(JSONObject film, String filmId) throws JSONException {
+        // Inflar um novo layout do modal
+        View modalView = LayoutInflater.from(this).inflate(R.layout.film_modal_tracker, null);
+
+        // Obter todos os componentes do modal a partir da referência do layout inflado
+        ImageView filmPoster = modalView.findViewById(R.id.film_poster);
+        TextView filmTitle = modalView.findViewById(R.id.film_title);
+        TextView filmDetails = modalView.findViewById(R.id.film_details);
+        TextView filmPlot = modalView.findViewById(R.id.film_plot);
+        Spinner relationTypeSpinner = modalView.findViewById(R.id.relation_type_spinner);
+        CheckBox favoriteCheckbox = modalView.findViewById(R.id.favorite_checkbox);
+        Button deleteFilmRelation = modalView.findViewById(R.id.delete_film_relation);
+        Button closeModal = modalView.findViewById(R.id.close_modal);
+        Button updateFilmRelation = modalView.findViewById(R.id.update_film_relation);
 
         // Obter os dados do JSON do filme
         String title = film.getString("title");
@@ -298,15 +263,15 @@ public class TrackerActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.relation_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        relationType.setAdapter(adapter);
-        relationType.setSelection(getRelationTypeIndex(currentRelationType));
+        relationTypeSpinner.setAdapter(adapter);
+        relationTypeSpinner.setSelection(getRelationTypeIndex(currentRelationType));
 
         // Configurar o checkbox de favorito
         favoriteCheckbox.setChecked(isFavorite);
 
         // Exibir o modal
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(filmModal);
+        builder.setView(modalView);
         AlertDialog dialog = builder.create();
 
         // Configurar o botão de fechamento do modal dentro do dialog
@@ -316,24 +281,37 @@ public class TrackerActivity extends AppCompatActivity {
 
         // Configurar o botão de deletar filme
         deleteFilmRelation.setOnClickListener(v -> {
-            dialog.dismiss();
-            String filmId = (String) filmModal.getTag(); // Usar a tag para armazenar o filmId
             if (filmId != null) {
                 deleteFilmRelation(filmId);
+                dialog.dismiss();
+            }
+            else {
+                System.out.println("FilmId is null");
+                runOnUiThread(() -> Toast.makeText(TrackerActivity.this, "Failed to delete film relation", Toast.LENGTH_LONG).show());
+            }
+        });
+
+        updateFilmRelation.setOnClickListener(v -> {
+            String relationType =  relationTypeSpinner.getSelectedItem().toString();
+            boolean newFavorite = favoriteCheckbox.isChecked();
+            if (filmId != null) {
+                System.out.println(filmId + relationType);
+                System.out.println(newFavorite);
+                updateFilmRelation(filmId, relationType, newFavorite);
+                dialog.dismiss();
+            }
+            else {
+                System.out.println("FilmId is null");
+                runOnUiThread(() -> Toast.makeText(TrackerActivity.this, "Failed to update film relation", Toast.LENGTH_LONG).show());
             }
         });
     }
 
-
-    private void updateFilmRelation() {
-        String filmId = (String) filmModal.getTag();
+    private void updateFilmRelation(String filmId, String relationType, boolean isFavorite) {
         if (filmId == null) {
             Toast.makeText(this, "No film selected.", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        String relationType = this.relationType.getSelectedItem().toString();
-        boolean isFavorite = favoriteCheckbox.isChecked();
 
         RequestBody formBody = new FormBody.Builder()
                 .add("filmId", filmId)
@@ -343,8 +321,8 @@ public class TrackerActivity extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://10.0.2.2:8080/screentrackr_war_exploded/FilmRelationServlet")
-                .put(formBody)
+                .url("http://10.0.2.2:8080/screentrackr_war_exploded/UpdateFilmRelationServlet")
+                .post(formBody)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -355,16 +333,19 @@ public class TrackerActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                System.out.println("Response: " + response);
                 if (response.isSuccessful()) {
                     runOnUiThread(() -> {
                         Toast.makeText(TrackerActivity.this, "Film relation updated successfully!", Toast.LENGTH_SHORT).show();
-                        filmModal.setVisibility(View.GONE);
                         loadUserFilms(); // Reload to reflect changes
                     });
                 } else {
-                    runOnUiThread(() -> Toast.makeText(TrackerActivity.this, "Failed to update film relation", Toast.LENGTH_SHORT).show());
+                    String errorMessage = response.message();
+                    System.out.println(errorMessage);
+                    runOnUiThread(() -> Toast.makeText(TrackerActivity.this, "Failed to update film relation", Toast.LENGTH_LONG).show());
                 }
             }
+
         });
     }
 
@@ -385,7 +366,6 @@ public class TrackerActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     runOnUiThread(() -> {
                         Toast.makeText(TrackerActivity.this, "Film relation deleted successfully!", Toast.LENGTH_SHORT).show();
-                        filmModal.setVisibility(View.GONE);
                         loadUserFilms(); // Reload to reflect changes
                     });
                 } else {
@@ -396,11 +376,6 @@ public class TrackerActivity extends AppCompatActivity {
     }
 
     private int getRelationTypeIndex(String relationType) {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.relation_types, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.relationType.setAdapter(adapter);
-
         switch (relationType) {
             case "watching":
                 return 0;

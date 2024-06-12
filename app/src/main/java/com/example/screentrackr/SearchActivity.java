@@ -194,12 +194,12 @@ public class SearchActivity extends AppCompatActivity {
                     .setPositiveButton("Fechar", (dialog, which) -> dialog.dismiss())
                     .show();
 
-            addSubmitFilm.setText("Adicionar Filme");
+            AlertDialog dialog = builder.create();
             addSubmitFilm.setOnClickListener(v -> {
                 String selectedRelationType = relationTypeSpinner.getSelectedItem().toString();
                 boolean isFavorite = favoriteCheckbox.isChecked();
-
                 addOrUpdateFilmRelation(filmId, selectedRelationType, isFavorite, title, year, director, rating, votes, plot, posterUrl);
+                dialog.dismiss();
             });
 
         } catch (JSONException e) {
@@ -228,7 +228,7 @@ public class SearchActivity extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://10.0.2.2:8080/screentrackr_war_exploded/FilmRelationServlet")
+                .url("http://10.0.2.2:8080/screentrackr_war_exploded/AddFilmRelationServlet")
                 .post(formBody)
                 .build();
 
