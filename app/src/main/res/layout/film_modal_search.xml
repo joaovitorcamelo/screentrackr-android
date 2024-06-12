@@ -1,4 +1,4 @@
-<!-- layout/film_modal.xml -->
+<!-- layout/film_modal_search.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
             <Spinner
                 android:id="@+id/relation_type_spinner"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_bg"
                 android:padding="8dp" />
@@ -103,17 +103,6 @@
             android:background="@color/main_color"
             android:textColor="@color/brightest_color"
             android:padding="10dp" />
-
-        <!-- Botão para deletar o filme -->
-        <Button
-            android:id="@+id/delete_film_relation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Deletar Filme"
-            android:background="@color/errorBackground"
-            android:textColor="@color/brightest_color"
-            android:padding="10dp"
-            android:layout_marginTop="8dp" />
     </LinearLayout>
 
 </RelativeLayout>

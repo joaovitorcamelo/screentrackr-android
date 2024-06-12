@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -67,9 +67,13 @@ public class TrackerActivity extends AppCompatActivity {
         watchlistList = findViewById(R.id.watchlist_list);
         watchedList = findViewById(R.id.watched_list);
         cancelledList = findViewById(R.id.cancelled_list);
-        filmModal = findViewById(R.id.film_modal);
+
+        // Inflar o modal do layout film_modal_tracker.xml
+        filmModal = LayoutInflater.from(this).inflate(R.layout.film_modal_tracker, null);
+
+        // Inicializar componentes do modal
         filmTitle = filmModal.findViewById(R.id.film_title);
-        filmDetails = filmModal.findViewById(R.id.film_details); // Adicionado
+        filmDetails = filmModal.findViewById(R.id.film_details);
         filmPlot = filmModal.findViewById(R.id.film_plot);
         filmPoster = filmModal.findViewById(R.id.film_poster);
         relationType = filmModal.findViewById(R.id.relation_type_spinner);
@@ -265,13 +269,13 @@ public class TrackerActivity extends AppCompatActivity {
     }
 
     private void displayFilmDetails(JSONObject film) throws JSONException {
-        // Obter todos os componentes do modal a partir da referência do layout
-        ImageView filmPoster = filmModal.findViewById(R.id.film_poster);
-        TextView filmTitle = filmModal.findViewById(R.id.film_title);
-        TextView filmDetails = filmModal.findViewById(R.id.film_details);
-        TextView filmPlot = filmModal.findViewById(R.id.film_plot);
-        Spinner relationTypeSpinner = filmModal.findViewById(R.id.relation_type_spinner);
-        CheckBox favoriteCheckbox = filmModal.findViewById(R.id.favorite_checkbox);
+        // Obter todos os componentes do modal a partir da referência do layout film_modal_tracker
+        filmTitle = filmModal.findViewById(R.id.film_title);
+        filmDetails = filmModal.findViewById(R.id.film_details);
+        filmPlot = filmModal.findViewById(R.id.film_plot);
+        filmPoster = filmModal.findViewById(R.id.film_poster);
+        relationType = filmModal.findViewById(R.id.relation_type_spinner);
+        favoriteCheckbox = filmModal.findViewById(R.id.favorite_checkbox);
 
         // Obter os dados do JSON do filme
         String title = film.getString("title");
@@ -294,16 +298,32 @@ public class TrackerActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.relation_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        relationTypeSpinner.setAdapter(adapter);
-        relationTypeSpinner.setSelection(getRelationTypeIndex(currentRelationType));
+        relationType.setAdapter(adapter);
+        relationType.setSelection(getRelationTypeIndex(currentRelationType));
 
         // Configurar o checkbox de favorito
         favoriteCheckbox.setChecked(isFavorite);
 
-        // Tornar o modal visível
-        filmModal.setTag(film.getString("filmId")); // Usar a tag para armazenar o filmId
-        filmModal.setVisibility(View.VISIBLE);
+        // Exibir o modal
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(filmModal);
+        AlertDialog dialog = builder.create();
+
+        // Configurar o botão de fechamento do modal dentro do dialog
+        closeModal.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+
+        // Configurar o botão de deletar filme
+        deleteFilmRelation.setOnClickListener(v -> {
+            dialog.dismiss();
+            String filmId = (String) filmModal.getTag(); // Usar a tag para armazenar o filmId
+            if (filmId != null) {
+                deleteFilmRelation(filmId);
+            }
+        });
     }
+
 
     private void updateFilmRelation() {
         String filmId = (String) filmModal.getTag();

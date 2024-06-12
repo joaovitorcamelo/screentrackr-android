@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,7 +16,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -171,7 +169,7 @@ public class SearchActivity extends AppCompatActivity {
             String posterUrl = film.getString("Poster");
             String filmId = film.getString("imdbID");
 
-            View modalView = getLayoutInflater().inflate(R.layout.film_modal, null);
+            View modalView = getLayoutInflater().inflate(R.layout.film_modal_search, null);
 
             ImageView modalPoster = modalView.findViewById(R.id.film_poster);
             TextView modalTitle = modalView.findViewById(R.id.film_title);
