@@ -6,7 +6,7 @@
     android:background="@color/background_color"
     tools:context=".TrackerActivity">
 
-    <!-- SwipeRefreshLayout -->
+    <!-- SwipeRefreshLayout para atualizar a lista de filmes ao arrastar para baixo -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Currently Watching Section -->
+                <!-- Seção de filmes em exibição atualmente -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                         android:orientation="horizontal" />
                 </HorizontalScrollView>
 
-                <!-- Watchlist Section -->
+                <!-- Seção de filmes na lista de desejos -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                         android:orientation="horizontal" />
                 </HorizontalScrollView>
 
-                <!-- Watched Section -->
+                <!-- Seção de filmes assistidos -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                         android:orientation="horizontal" />
                 </HorizontalScrollView>
 
-                <!-- Cancelled Section -->
+                <!-- Seção de filmes cancelados -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,95 +111,78 @@
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <!-- Modal de Detalhes do Filme -->
     <RelativeLayout
         android:id="@+id/film_modal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:background="@color/main_color"
-        android:padding="20dp">
+        android:background="@color/input_bg">
 
-        <!-- ScrollView para permitir o scroll do conteúdo do modal -->
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="16dp">
-
-            <LinearLayout
-                android:id="@+id/film_details_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:background="@color/input_bg"
-                android:elevation="8dp"
-                android:layout_centerInParent="true">
-
-                <!-- Movie Poster -->
-                <ImageView
-                    android:id="@+id/film_poster"
-                    android:layout_width="wrap_content"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Movie Title -->
-                <TextView
-                    android:id="@+id/film_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/brightest_color"
-                    android:textSize="20sp"
-                    android:layout_marginBottom="8dp" />
-
-                <!-- Movie Plot -->
-                <TextView
-                    android:id="@+id/film_plot"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/brightest_color"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="16dp" />
-            </LinearLayout>
-        </ScrollView>
-
-        <!-- Movie Relations e Ações -->
+        <!-- Conteúdo do Modal -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_alignParentBottom="true"
             android:padding="20dp"
-            android:background="@color/input_bg">
+            android:background="@color/background_color"
+            android:layout_centerInParent="true"
+            android:layout_margin="32dp"
+            android:elevation="10dp"
+            android:clipToPadding="false">
 
-            <!-- Spinner e Checkbox -->
-            <LinearLayout
+            <!-- Poster do Filme -->
+            <ImageView
+                android:id="@+id/film_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Título do Filme -->
+            <TextView
+                android:id="@+id/film_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="16dp">
+                android:textColor="@color/brightest_color"
+                android:textSize="20sp"
+                android:layout_marginBottom="8dp" />
 
-                <!-- Relation Type Spinner -->
-                <Spinner
-                    android:id="@+id/relation_type_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/spinner_bg"
-                    android:padding="8dp" />
+            <!-- Detalhes do Filme (Diretor, Rating, Votos) -->
+            <TextView
+                android:id="@+id/film_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/brightest_color"
+                android:textSize="14sp"
+                android:layout_marginBottom="16dp" />
 
-                <!-- Favorite Checkbox -->
-                <CheckBox
-                    android:id="@+id/favorite_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Favorite"
-                    android:textColor="@color/brightest_color"
-                    android:layout_marginLeft="8dp" />
-            </LinearLayout>
+            <!-- Sinopse do Filme -->
+            <TextView
+                android:id="@+id/film_plot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/brightest_color"
+                android:textSize="14sp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Spinner para a Classificação -->
+            <Spinner
+                android:id="@+id/relation_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_bg"
+                android:padding="8dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Checkbox para Marcar como Favorito -->
+            <CheckBox
+                android:id="@+id/favorite_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorite"
+                android:textColor="@color/brightest_color"
+                android:layout_marginBottom="16dp" />
 
             <!-- Botões de Ação -->
             <Button
@@ -217,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:text="Delete"
                 android:background="@color/errorBackground"
-                android:textColor="@color/errorText"
+                android:textColor="@color/brightest_color"
                 android:layout_marginBottom="8dp" />
 
             <Button
@@ -225,7 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Close"
-                android:background="@color/errorBackground"
+                android:background="@color/main_color_focus"
                 android:textColor="@color/brightest_color" />
         </LinearLayout>
     </RelativeLayout>

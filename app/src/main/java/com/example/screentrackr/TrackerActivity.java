@@ -44,6 +44,7 @@ public class TrackerActivity extends AppCompatActivity {
     private LinearLayout cancelledList;
     private View filmModal;
     private TextView filmTitle;
+    private TextView filmDetails;
     private TextView filmPlot;
     private ImageView filmPoster;
     private Spinner relationType;
@@ -68,6 +69,7 @@ public class TrackerActivity extends AppCompatActivity {
         cancelledList = findViewById(R.id.cancelled_list);
         filmModal = findViewById(R.id.film_modal);
         filmTitle = filmModal.findViewById(R.id.film_title);
+        filmDetails = filmModal.findViewById(R.id.film_details); // Adicionado
         filmPlot = filmModal.findViewById(R.id.film_plot);
         filmPoster = filmModal.findViewById(R.id.film_poster);
         relationType = filmModal.findViewById(R.id.relation_type_spinner);
@@ -263,6 +265,15 @@ public class TrackerActivity extends AppCompatActivity {
     }
 
     private void displayFilmDetails(JSONObject film) throws JSONException {
+        // Obter todos os componentes do modal a partir da referência do layout
+        ImageView filmPoster = filmModal.findViewById(R.id.film_poster);
+        TextView filmTitle = filmModal.findViewById(R.id.film_title);
+        TextView filmDetails = filmModal.findViewById(R.id.film_details);
+        TextView filmPlot = filmModal.findViewById(R.id.film_plot);
+        Spinner relationTypeSpinner = filmModal.findViewById(R.id.relation_type_spinner);
+        CheckBox favoriteCheckbox = filmModal.findViewById(R.id.favorite_checkbox);
+
+        // Obter os dados do JSON do filme
         String title = film.getString("title");
         String year = film.getString("year");
         String director = film.getString("director");
@@ -271,13 +282,25 @@ public class TrackerActivity extends AppCompatActivity {
         String plot = film.getString("plot");
         String posterUrl = film.getString("posterImgUrl");
         String currentRelationType = film.getString("relationType");
-        boolean isFavorite = film.getBoolean("favorite");
+        boolean isFavorite = film.getBoolean("isFavorite");
 
+        // Atualizar o conteúdo do modal
         filmTitle.setText(title + " (" + year + ")");
+        filmDetails.setText("Director: " + director + "\nRating: " + rating + " (" + votes + " votes)");
         filmPlot.setText(plot);
         Picasso.get().load(posterUrl).into(filmPoster);
-        relationType.setSelection(getRelationTypeIndex(currentRelationType));
+
+        // Configurar o Spinner de relação
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.relation_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        relationTypeSpinner.setAdapter(adapter);
+        relationTypeSpinner.setSelection(getRelationTypeIndex(currentRelationType));
+
+        // Configurar o checkbox de favorito
         favoriteCheckbox.setChecked(isFavorite);
+
+        // Tornar o modal visível
         filmModal.setTag(film.getString("filmId")); // Usar a tag para armazenar o filmId
         filmModal.setVisibility(View.VISIBLE);
     }
