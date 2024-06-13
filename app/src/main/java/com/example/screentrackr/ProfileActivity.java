@@ -126,10 +126,15 @@ public class ProfileActivity extends AppCompatActivity {
     private void updateUIWithUserInfo(JSONObject user) {
         try {
             String name = user.getString("name");
-            String bio = user.optString("bio", "No bio provided.");
+            String bio = user.optString("bio", null);  // Use null as default
 
             userNameTextView.setText(name);
-            userBioTextView.setText(bio.isEmpty() ? "No bio available." : bio);
+            // Verifica se bio é nula ou "null" (string), então trata como ausente
+            if (bio == null || "null".equals(bio)) {
+                userBioTextView.setText("No bio available.");
+            } else {
+                userBioTextView.setText(bio);
+            }
         } catch (JSONException e) {
             Toast.makeText(this, "Failed to update user info: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
