@@ -28,7 +28,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="20dp"
         android:contentDescription="@string/screentrackr_logo"
-        android:src="@drawable/logo_foreground" />
+        android:src="@drawable/screentrackr" />
 
     <LinearLayout
         android:layout_width="match_parent"

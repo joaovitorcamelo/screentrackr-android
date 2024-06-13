@@ -15,7 +15,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginBottom="30dp"
         android:contentDescription="@string/screentrackr_logo"
-        android:src="@drawable/logo_foreground" />
+        android:src="@drawable/screentrackr" />
 
     <Button
         android:id="@+id/login_button"
