@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -75,6 +76,7 @@ public class SearchActivity extends AppCompatActivity {
         Log.d("UserPrefs", "Auth Token: " + authToken);
 
         searchButton.setOnClickListener(v -> {
+            hideKeyboard(v);
             String query = searchInput.getText().toString().trim();
             if (!query.isEmpty()) {
                 searchMovies(query);
@@ -99,6 +101,13 @@ public class SearchActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null && view != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private void searchMovies(String query) {
