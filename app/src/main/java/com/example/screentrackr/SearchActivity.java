@@ -1,10 +1,12 @@
 package com.example.screentrackr;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -169,7 +171,7 @@ public class SearchActivity extends AppCompatActivity {
             String posterUrl = film.getString("Poster");
             String filmId = film.getString("imdbID");
 
-            View modalView = getLayoutInflater().inflate(R.layout.film_modal_search, null);
+            View modalView = LayoutInflater.from(this).inflate(R.layout.film_modal_search, null);
 
             ImageView modalPoster = modalView.findViewById(R.id.film_poster);
             TextView modalTitle = modalView.findViewById(R.id.film_title);
@@ -178,6 +180,8 @@ public class SearchActivity extends AppCompatActivity {
             Spinner relationTypeSpinner = modalView.findViewById(R.id.relation_type_spinner);
             CheckBox favoriteCheckbox = modalView.findViewById(R.id.favorite_checkbox);
             Button addSubmitFilm = modalView.findViewById(R.id.add_submit_film);
+            Button closeModal = modalView.findViewById(R.id.close_modal_button);
+
 
             modalTitle.setText(title + " (" + year + ")");
             modalDetails.setText("Director: " + director + "\nRating: " + rating + " (" + votes + " votes)");
@@ -189,12 +193,16 @@ public class SearchActivity extends AppCompatActivity {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             relationTypeSpinner.setAdapter(adapter);
 
+            // Exibir o modal
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setView(modalView)
-                    .setPositiveButton("Fechar", (dialog, which) -> dialog.dismiss())
-                    .show();
-
+            builder.setView(modalView);
             AlertDialog dialog = builder.create();
+
+            // Configurar o botão de fechamento do modal dentro do dialog
+            closeModal.setOnClickListener(v -> dialog.dismiss());
+
+            dialog.show();
+
             addSubmitFilm.setOnClickListener(v -> {
                 String selectedRelationType = relationTypeSpinner.getSelectedItem().toString();
                 boolean isFavorite = favoriteCheckbox.isChecked();

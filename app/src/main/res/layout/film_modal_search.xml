@@ -7,6 +7,7 @@
     android:elevation="8dp"
     android:layout_centerInParent="true">
 
+
     <!-- ScrollView para o conteúdo do filme -->
     <ScrollView
         android:layout_width="match_parent"
@@ -97,12 +98,22 @@
         <!-- Botão para adicionar ou atualizar o filme -->
         <Button
             android:id="@+id/add_submit_film"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Adicionar Filme"
             android:background="@color/main_color"
-            android:textColor="@color/brightest_color"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:text="Add Film"
+            android:textColor="@color/brightest_color" />
+
+        <Button
+            android:id="@+id/close_modal_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/main_color"
+            android:text="Close"
+            android:textColor="@color/brightest_color" />
+
     </LinearLayout>
 
 </RelativeLayout>
