@@ -1,13 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_color"
     tools:context=".ProfileActivity">
 
-    <!-- Conteúdo do Perfil aqui -->
+    <!-- Botão de Logout no canto superior direito -->
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/errorBackground"
+        android:padding="10dp"
+        android:text="Logout"
+        android:textColor="@color/brightest_color"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp" />
 
+    <!-- Caixa de Informação do Perfil -->
+    <RelativeLayout
+        android:id="@+id/profile_info_box"
+        android:layout_width="wrap_content"
+        android:layout_height="247dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/input_bg"
+        android:elevation="4dp"
+        android:padding="16dp">
+
+        <!-- Nome do Usuário e Bio Alinhados à Esquerda -->
+        <LinearLayout
+            android:id="@+id/profile_info_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Nome do Usuário -->
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="User Name"
+                android:textColor="@color/brightest_color"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Biografia do Usuário -->
+            <TextView
+                android:id="@+id/user_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Bio is written here. Limit of 100 characters."
+                android:textColor="@color/placeholder_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Botão de Editar Perfil no canto superior direito da caixa -->
+        <Button
+            android:id="@+id/edit_profile_button"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="166dp"
+            android:layout_marginEnd="23dp"
+            android:layout_marginRight="23dp"
+            android:background="@color/main_color"
+            android:text="Edit Profile"
+            android:textColor="@color/brightest_color" />
+
+    </RelativeLayout>
+
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -18,4 +98,5 @@
         app:itemTextColor="@color/placeholder_color"
         app:itemTextAppearanceActive="@color/main_color"
         app:menu="@menu/bottom_nav_menu" />
+
 </RelativeLayout>

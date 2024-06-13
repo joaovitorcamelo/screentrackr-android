@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:elevation="8dp"
+    android:background="@color/input_bg"
+
+    android:layout_centerInParent="true">
+
+    <!-- Conteúdo do Modal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Input para Nome -->
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your name"
+            android:textColor="@color/brightest_color"
+            android:textColorHint="@color/placeholder_color"
+            android:backgroundTint="@color/brightest_color"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:inputType="textPersonName" />
+
+        <!-- Input para Bio -->
+        <EditText
+            android:id="@+id/edit_bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your bio"
+            android:textColor="@color/brightest_color"
+            android:textColorHint="@color/placeholder_color"
+            android:backgroundTint="@color/brightest_color"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp"
+            android:inputType="text" />
+
+        <!-- Container para Botões -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:background="@color/header_border"
+                android:textColor="@color/brightest_color"
+                android:padding="12dp" />
+
+            <Button
+                android:id="@+id/save_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:background="@color/main_color"
+                android:padding="12dp"
+                android:text="Save"
+                android:textColor="@color/brightest_color" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
