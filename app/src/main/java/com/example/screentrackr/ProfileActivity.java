@@ -10,9 +10,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -39,6 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private int userId;
     private String authToken;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +52,12 @@ public class ProfileActivity extends AppCompatActivity {
         editProfileButton = findViewById(R.id.edit_profile_button);
         client = new OkHttpClient();
         sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
         // Recuperar informações do usuário
         userId = sharedPreferences.getInt("userId", -1);
         authToken = sharedPreferences.getString("authToken", null);
 
-        // Verificar se o usuário está autenticado
         if (userId == -1 || authToken == null) {
             Toast.makeText(this, "User not authenticated. Please log in again.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
@@ -64,14 +65,10 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
 
-        // Configurar botões
         logoutButton.setOnClickListener(v -> logoutUser());
         editProfileButton.setOnClickListener(v -> openEditProfileModal());
-
-        // Carregar informações do usuário
         fetchUserInfo();
 
-        // Configurar navegação inferior
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 
@@ -87,6 +84,11 @@ public class ProfileActivity extends AppCompatActivity {
                     return true;
             }
             return false;
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchUserInfo();
+            swipeRefreshLayout.setRefreshing(false);
         });
     }
 
@@ -124,10 +126,10 @@ public class ProfileActivity extends AppCompatActivity {
     private void updateUIWithUserInfo(JSONObject user) {
         try {
             String name = user.getString("name");
-            String bio = user.getString("bio");
+            String bio = user.optString("bio", "No bio provided.");
 
             userNameTextView.setText(name);
-            userBioTextView.setText(bio);
+            userBioTextView.setText(bio.isEmpty() ? "No bio available." : bio);
         } catch (JSONException e) {
             Toast.makeText(this, "Failed to update user info: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -141,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity {
         Button cancelButton = modalView.findViewById(R.id.cancel_button);
 
         nameEditText.setText(userNameTextView.getText().toString());
-        bioEditText.setText(userBioTextView.getText().toString());
+        bioEditText.setText(userBioTextView.getText().toString().equals("No bio available.") ? "" : userBioTextView.getText().toString());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(modalView);
@@ -159,6 +161,14 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateUserInfo(AlertDialog dialog, String updatedName, String updatedBio) {
+        // Recupera o nome e a biografia atuais para uso caso os novos valores estejam vazios
+        String currentName = userNameTextView.getText().toString();
+        String currentBio = userBioTextView.getText().toString().equals("No bio available.") ? "" : userBioTextView.getText().toString();
+
+        // Substitui os valores vazios pelos atuais para evitar a atualização para "null"
+        updatedName = updatedName.isEmpty() ? currentName : updatedName;
+        updatedBio = updatedBio.isEmpty() ? currentBio : updatedBio;
+
         String url = "http://10.0.2.2:8080/screentrackr_war_exploded/UpdateUserProfileServlet";
 
         RequestBody formBody = new FormBody.Builder()
@@ -184,7 +194,7 @@ public class ProfileActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         Toast.makeText(ProfileActivity.this, "User info updated successfully!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-                        fetchUserInfo(); // Atualiza as informações do usuário na UI
+                        fetchUserInfo(); // Re-fetch the user info to update UI
                     });
                 } else {
                     runOnUiThread(() -> Toast.makeText(ProfileActivity.this, "Failed to update user info", Toast.LENGTH_SHORT).show());
@@ -194,13 +204,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void logoutUser() {
-        // Limpar as preferências compartilhadas
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("userId");
         editor.remove("authToken");
         editor.apply();
 
-        // Navegar de volta para a tela de login
         startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
         finish();
     }
